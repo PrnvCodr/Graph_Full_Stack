@@ -3,10 +3,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
-require('dotenv').config(); // To load environment variables from .env file
+// require('dotenv').config(); // This is not needed on Vercel, environment variables are set in the dashboard.
 
 const app = express();
-const port = 3000;
+// const port = 3000; // The port is not needed on Vercel's serverless environment.
 
 // --- Middleware ---
 app.use(bodyParser.json());
@@ -101,12 +101,14 @@ app.post('/api/ask', async (req, res) => {
     }
 });
 
-
-// --- Start Server ---
+/*
+// --- Start Server --- This block is for local development only. Vercel handles this automatically.
 app.listen(port, () => {
     console.log(`🤖 AI Assistant backend server listening on http://localhost:${port}`);
     if (!process.env.GEMINI_API_KEY) {
         console.warn("⚠️ WARNING: GEMINI_API_KEY is not set. Please create a .env file and add your API key.");
     }
 });
-module.exports = app;
+*/
+
+module.exports = app; // This should be the last line
