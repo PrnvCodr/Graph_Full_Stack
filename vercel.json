@@ -1,19 +1,19 @@
 {
   "version": 2,
   "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node"
-    }
+    { "src": "server.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "style.css", "use": "@vercel/static" },
+    { "src": "ai-assistant.css", "use": "@vercel/static" },
+    { "src": "app.js", "use": "@vercel/static" },
+    { "src": "ai-assistant.js", "use": "@vercel/static" }
   ],
   "routes": [
-    {
-      "src": "/api/ask",
-      "dest": "server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
+    { "src": "/api/ask", "dest": "/server.js" },
+    { "src": "/style.css", "dest": "/style.css" },
+    { "src": "/ai-assistant.css", "dest": "/ai-assistant.css" },
+    { "src": "/app.js", "dest": "/app.js" },
+    { "src": "/ai-assistant.js", "dest": "/ai-assistant.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
