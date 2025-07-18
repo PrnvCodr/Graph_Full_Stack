@@ -22,7 +22,22 @@ app.post('/api/ask', async (req, res) => {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         
-        const chat = model.startChat({ history: (history || []) });
+        // Prepare the history for the AI
+        const historyForChat = history ? history.slice(0, -1) : []; // Get all messages except the last one (the user's new prompt)
+        
+        let validHistory = historyForChat.map(msg => ({
+            role: msg.role === 'ai' ? 'model' : 'user',
+            parts: msg.parts,
+        }));
+
+        // --- THIS IS THE FIX ---
+        // The Gemini API requires the conversation history to start with a 'user' role.
+        // If the first message in our history is the AI's welcome message, we remove it.
+        if (validHistory.length > 0 && validHistory[0].role === 'model') {
+            validHistory.shift(); // Removes the first element
+        }
+        
+        const chat = model.startChat({ history: validHistory });
         
         const contextualPrompt = `Graph State: ${graph.nodeCount} nodes, ${graph.edgeCount} edges. User: "${prompt}"`;
 
